@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { Suspense, useState, FormEvent } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -9,7 +9,7 @@ import { signIn, signInWithGoogle } from "@/services/auth.service";
 import { getPostAuthRedirect } from "@/services/profiling.service";
 import { useAuthStore } from "@/store/authStore";
 
-export default function LoginPage() {
+function LoginPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { setUser, setToken } = useAuthStore();
@@ -519,5 +519,19 @@ export default function LoginPage() {
         }
       `}</style>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#f0f2f5] flex items-center justify-center text-[#1e4d8c] text-sm font-medium">
+          Loading…
+        </div>
+      }
+    >
+      <LoginPageContent />
+    </Suspense>
   );
 }

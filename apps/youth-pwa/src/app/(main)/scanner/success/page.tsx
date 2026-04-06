@@ -1,9 +1,10 @@
 'use client'
+import { Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { formatPoints } from '@/utils/formatPoints'
 import Button from '@/components/ui/Button'
 
-export default function ScanSuccessPage() {
+function ScanSuccessPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const points = parseInt(searchParams.get('points') || '0', 10)
@@ -49,5 +50,19 @@ export default function ScanSuccessPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function ScanSuccessPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gray-900 flex items-center justify-center text-gray-400 text-sm">
+          Loading…
+        </div>
+      }
+    >
+      <ScanSuccessPageContent />
+    </Suspense>
   )
 }

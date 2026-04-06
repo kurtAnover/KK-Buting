@@ -1,12 +1,12 @@
 'use client'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { confirmReset } from '@/services/auth.service'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 
-export default function ResetPasswordPage() {
+function ResetPasswordPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const oobCode = searchParams.get('oobCode') || ''
@@ -109,5 +109,19 @@ export default function ResetPasswordPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center text-gray-600 text-sm">
+          Loading…
+        </div>
+      }
+    >
+      <ResetPasswordPageContent />
+    </Suspense>
   )
 }

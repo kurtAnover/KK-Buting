@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { Suspense, useEffect, useMemo, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { refreshVerifiedUser, resendVerificationEmail } from '@/services/auth.service'
 import { getPostAuthRedirect } from '@/services/profiling.service'
@@ -8,7 +8,7 @@ import { useAuthStore } from '@/store/authStore'
 
 const RESEND_SECONDS = 60
 
-export default function OTPPage() {
+function OTPPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const email = searchParams.get('email')
@@ -163,5 +163,19 @@ export default function OTPPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function OTPPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center text-[#014384] text-sm font-medium">
+          Loading…
+        </div>
+      }
+    >
+      <OTPPageContent />
+    </Suspense>
   )
 }

@@ -1,8 +1,9 @@
 'use client'
+import { Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Button from '@/components/ui/Button'
 
-export default function ScanFailedPage() {
+function ScanFailedPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const reason = searchParams.get('reason') || 'invalid'
@@ -47,5 +48,19 @@ export default function ScanFailedPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function ScanFailedPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gray-900 flex items-center justify-center text-gray-400 text-sm">
+          Loading…
+        </div>
+      }
+    >
+      <ScanFailedPageContent />
+    </Suspense>
   )
 }
