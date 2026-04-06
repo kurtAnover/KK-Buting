@@ -110,7 +110,6 @@ export async function signInWithGoogle() {
 }
 
 export async function signOut() {
-  await api.post('/auth/logout')
   await firebaseSignOut(auth)
 }
 

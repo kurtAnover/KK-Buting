@@ -26,7 +26,13 @@ function normalizeUser(payload: Record<string, unknown>, fallbackEmail: string):
 export async function signIn(email: string, password: string): Promise<AuthPayload> {
   const credential = await signInWithEmailAndPassword(auth, email.trim(), password)
   const token = await credential.user.getIdToken(true)
-  const response = await api.post('/auth/login', {})
+  const response = await api.post(
+    '/auth/login',
+    {},
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  )
   const user = normalizeUser(response.data.user ?? response.data, credential.user.email ?? email)
 
   if (user.role !== 'merchant') {
